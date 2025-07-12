@@ -1,0 +1,512 @@
+/* --- Variables y Estilos Globales --- */
+:root {
+    --primary-blue: #007BFF;
+    --accent-amber: #FFC107; /* Cambiado a ámbar */
+    --soft-background: #f8f9fa;
+    --clean-white: #FFFFFF;
+    --dark-text: #212529;
+    --secondary-text: #6c757d;
+    --border-color: #dee2e6;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    color: var(--dark-text);
+    background-color: var(--clean-white);
+    line-height: 1.7;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 700;
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 3.2rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--secondary-text);
+    max-width: 700px;
+    margin: 0 auto 50px;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-blue);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+section {
+    padding: 80px 0;
+    overflow: hidden; /* Para evitar barras de scroll por animaciones */
+}
+
+/* --- Animación de desvanecido --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* --- Header --- */
+.main-header {
+    background: var(--clean-white);
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--dark-text);
+}
+
+.logo img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    box-shadow: none;
+}
+
+/* --- Botones --- */
+.btn {
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 2px solid transparent;
+}
+
+.btn-primary {
+    background-color: var(--primary-blue);
+    color: var(--clean-white);
+    border-color: var(--primary-blue);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.35);
+}
+
+.btn-secondary {
+    background-color: var(--clean-white);
+    color: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-blue);
+    color: var(--clean-white);
+}
+
+
+/* --- Hero Section --- */
+.hero-section {
+    background-color: var(--clean-white);
+    padding: 60px 0;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.hero-text {
+    max-width: 55%;
+}
+
+.hero-text .subtitle {
+    font-size: 1.2rem;
+    color: var(--secondary-text);
+    margin-bottom: 30px;
+}
+
+.hero-mockup {
+    max-width: 40%;
+    position: relative;
+}
+
+.mockup-overlay-text {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.6);
+    color: var(--clean-white);
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* --- Customer Flow Section --- */
+.customer-flow-section {
+    background-color: var(--soft-background);
+}
+
+.flow-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    text-align: center;
+}
+
+.step p {
+    margin-top: 15px;
+    font-size: 0.95rem;
+    color: var(--secondary-text);
+}
+
+/* --- Waiter Call Section --- */
+.waiter-call-section {
+    background-color: var(--clean-white);
+}
+
+.waiter-call-content {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.waiter-call-images {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.waiter-call-text {
+    flex: 1;
+}
+
+.waiter-call-text h2 {
+    text-align: left;
+}
+
+/* --- Management Section --- */
+.management-section {
+    background-color: var(--soft-background);
+}
+
+.management-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.management-item {
+    background: var(--clean-white);
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.management-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.management-item img {
+    margin-bottom: 15px;
+}
+
+.management-item h4 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+/* --- Benefits Section --- */
+.benefits-section {
+    padding: 60px 0;
+}
+
+.benefits-section h3 {
+    margin-bottom: 40px;
+}
+
+.benefits-icons {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.benefit-item {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.benefit-item .icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.benefit-item p {
+    font-weight: 600;
+}
+
+/* --- Pricing Section --- */
+.pricing-section {
+    background-color: var(--soft-background);
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pricing-card {
+    background: var(--clean-white);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+}
+
+.pricing-card h3 {
+    font-size: 1.5rem;
+}
+
+.pricing-card .price {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin: 10px 0;
+}
+
+.pricing-card .price span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--secondary-text);
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+    text-align: left;
+    color: var(--dark-text);
+    flex-grow: 1;
+}
+
+.features-list li {
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.features-list li::before {
+    content: '✓';
+    color: var(--primary-blue);
+    font-weight: 700;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.pricing-card .btn {
+    margin-top: 1rem;
+}
+
+.pricing-card.pro {
+    border-color: var(--primary-blue);
+    position: relative;
+}
+
+.pricing-card.pro::before {
+    content: 'Recomendado';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-blue);
+    color: var(--clean-white);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+
+/* --- Contact Section --- */
+.contact-section {
+    padding: 60px 0;
+    background-color: var(--clean-white);
+}
+
+.trust-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--soft-background);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.whatsapp-icon {
+    background-color: var(--accent-amber);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.whatsapp-icon img {
+    width: 45px;
+    height: 45px;
+    box-shadow: none;
+    object-fit: cover;
+}
+
+.trust-badge img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: none;
+}
+
+.trust-text p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.trust-text .sri-compliance {
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+}
+
+/* --- Footer --- */
+.main-footer-dark {
+    background-color: var(--dark-text);
+    color: var(--clean-white);
+    padding: 40px 0;
+    text-align: center;
+}
+
+.footer-links {
+    margin-bottom: 15px;
+}
+
+.footer-links a {
+    color: var(--clean-white);
+    margin: 0 15px;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--accent-amber);
+}
+
+.main-footer-dark p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 992px) {
+    h1 { font-size: 2.8rem; }
+    h2 { font-size: 2.2rem; }
+
+    .hero-content, .waiter-call-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-text, .waiter-call-text {
+        max-width: 100%;
+    }
+
+    .waiter-call-text h2 {
+        text-align: center;
+    }
+
+    .hero-mockup {
+        max-width: 100%;
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .flow-steps, .management-grid, .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .benefits-icons {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .trust-badge {
+        flex-direction: column;
+        text-align: center;
+    }
+}
