@@ -1,170 +1,317 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MenuFacilito - Transforma tu restaurante con tecnología que sorprende</title>
-    <link rel="icon" type="image/x-icon" href="img/logo.ico">
+    <title>MenuFacilito - La app para gestionar tu restaurante</title>
+    <link rel="icon" type="image/svg+xml" href="img/logo.svg">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
+    <!-- HEADER -->
     <header class="main-header">
-        <div class="container">
+        <div class="container header-inner">
+            <nav class="nav-left">
+                <a href="#servicios">Servicios</a>
+                <a href="#planes">Planes</a>
+            </nav>
             <a href="#" class="logo">
-                <img src="img/logo.png" alt="Logo MenuFacilito">
-                <span>MenuFacilito</span>
+                <img src="img/logo.svg" alt="Logo MenuFacilito">
             </a>
+            <nav class="nav-right">
+                <a href="#multi-restaurante">Multi-sucursal</a>
+                <a href="#contacto" class="btn btn-outline-header">Contactanos</a>
+            </nav>
+            <button class="mobile-toggle" aria-label="Abrir menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
+        <nav class="mobile-nav">
+            <a href="#servicios">Servicios</a>
+            <a href="#planes">Planes</a>
+            <a href="#multi-restaurante">Multi-sucursal</a>
+            <a href="#contacto">Contactanos</a>
+        </nav>
     </header>
 
     <main>
+        <!-- HERO -->
         <section id="hero" class="hero-section">
             <div class="container hero-content">
                 <div class="hero-text">
-                    <h1>Transforma tu restaurante con tecnología que sorprende</h1>
-                    <p class="subtitle">MenuFacilito moderniza la forma en que tomas pedidos y atiendes a tus clientes, desde su propio celular.</p>
-                    <a href="javascript:alert('¡Próximamente en las tiendas de aplicaciones!');" class="btn btn-primary">Empieza gratis</a>
+                    <h1>GESTIONA TU RESTAURANTE DESDE UNA SOLA APP</h1>
+                    <p class="subtitle">Comandas, menu digital, delivery, facturacion electronica, reportes y mas. Todo lo que necesitas para crecer, sin comisiones.</p>
+                    <div class="hero-buttons">
+                        <a href="#planes" class="btn btn-primary">Ver planes</a>
+                        <a href="#servicios" class="btn btn-secondary">Conoce mas</a>
+                    </div>
                 </div>
                 <div class="hero-mockup">
-                    <img src="img/mockups/menu.png" alt="Vista del menú digital de MenuFacilito en un smartphone" class="reveal">
+                    <img src="img/mockups/captura con todos los servicios que se ofrece en la app.png" alt="Vista general de la app MenuFacilito" class="reveal">
                 </div>
             </div>
         </section>
 
-        <section id="customer-flow" class="customer-flow-section">
+        <!-- MARQUEE de servicios -->
+        <div class="marquee-bar">
+            <div class="marquee-track">
+                <span>COMANDAS</span>
+                <span>&middot;</span>
+                <span>MENU DIGITAL</span>
+                <span>&middot;</span>
+                <span>DELIVERY</span>
+                <span>&middot;</span>
+                <span>FACTURACION ELECTRONICA</span>
+                <span>&middot;</span>
+                <span>REPORTES DE VENTAS</span>
+                <span>&middot;</span>
+                <span>CIERRE DE CAJA</span>
+                <span>&middot;</span>
+                <span>CONTROL DE INVENTARIO</span>
+                <span>&middot;</span>
+                <span>COMANDAS</span>
+                <span>&middot;</span>
+                <span>MENU DIGITAL</span>
+                <span>&middot;</span>
+                <span>DELIVERY</span>
+                <span>&middot;</span>
+                <span>FACTURACION ELECTRONICA</span>
+                <span>&middot;</span>
+                <span>REPORTES DE VENTAS</span>
+                <span>&middot;</span>
+                <span>CIERRE DE CAJA</span>
+                <span>&middot;</span>
+                <span>CONTROL DE INVENTARIO</span>
+                <span>&middot;</span>
+            </div>
+        </div>
+
+        <!-- AUTOSERVICIO - Como funciona para el cliente -->
+        <section id="autoservicio" class="autoservicio-section">
+            <div class="container autoservicio-content">
+                <div class="autoservicio-text">
+                    <p class="autoservicio-label">AUTOSERVICIO DIGITAL</p>
+                    <h2 class="autoservicio-step-title" id="autoservicio-title">PASO 1</h2>
+                    <p class="autoservicio-desc" id="autoservicio-desc">El cliente escanea el codigo QR de la mesa y accede al menu completo desde su celular. Sin esperas, sin necesidad de mesero.</p>
+                    <div class="autoservicio-controls">
+                        <button class="slider-arrow slider-prev" aria-label="Anterior">&larr;</button>
+                        <div class="slider-dots">
+                            <span class="dot active" data-index="0"></span>
+                            <span class="dot" data-index="1"></span>
+                            <span class="dot" data-index="2"></span>
+                            <span class="dot" data-index="3"></span>
+                        </div>
+                        <button class="slider-arrow slider-next" aria-label="Siguiente">&rarr;</button>
+                    </div>
+                </div>
+                <div class="autoservicio-image">
+                    <img id="autoservicio-img" src="img/mockups/cliente1.png" alt="Paso 1 - Escanear QR">
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICIOS -->
+        <section id="servicios" class="feature-section bg-cream">
+            <div class="container feature-row">
+                <div class="feature-text reveal">
+                    <h2>Gestion de Comandas</h2>
+                    <p>Recibe y organiza los pedidos de tus mesas y delivery en tiempo real. Filtra por estado: en espera, servido o cobrado. Toda tu operacion centralizada en un solo lugar.</p>
+                </div>
+                <div class="feature-mockup reveal">
+                    <img src="img/mockups/comandas.png" alt="Gestion de comandas">
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-section bg-teal">
+            <div class="container feature-row reverse">
+                <div class="feature-text reveal">
+                    <h2>Delivery sin Comisiones</h2>
+                    <p>Ofrece un link propio para que tus clientes hagan pedidos a domicilio. Sin intermediarios, sin comisiones. Tu manejas tus repartidores, nosotros te damos el software.</p>
+                </div>
+                <div class="feature-mockup reveal">
+                    <img src="img/mockups/delivery.png" alt="Sistema de delivery">
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-section bg-cream">
+            <div class="container feature-row">
+                <div class="feature-text reveal">
+                    <h2>Facturacion Electronica Ilimitada</h2>
+                    <p>Emite facturas electronicas autorizadas por el SRI de forma ilimitada, directamente desde la app. Sin limites, sin costos adicionales por factura.</p>
+                </div>
+                <div class="feature-mockup reveal">
+                    <img src="img/mockups/facturacion electronica.png" alt="Facturacion electronica">
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-section bg-teal">
+            <div class="container feature-row reverse">
+                <div class="feature-text reveal">
+                    <h2>Menu Digital con QR</h2>
+                    <p>Tus clientes escanean un codigo QR y acceden al menu completo desde su celular. Actualizable al instante, sin costos de impresion.</p>
+                </div>
+                <div class="feature-mockup reveal">
+                    <img src="img/mockups/menu digital clientes.png" alt="Menu digital QR">
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-section bg-cream">
+            <div class="container feature-row">
+                <div class="feature-text reveal">
+                    <h2>Reportes de Ventas</h2>
+                    <p>Analiza tus ingresos por periodo, metodo de pago, ticket promedio y mas. Toma decisiones basadas en datos reales para hacer crecer tu negocio.</p>
+                </div>
+                <div class="feature-mockup reveal">
+                    <img src="img/mockups/reporte de ventas.png" alt="Reporte de ventas">
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-section bg-teal">
+            <div class="container feature-row reverse">
+                <div class="feature-text reveal">
+                    <h2>Control de Inventario</h2>
+                    <p>Gestiona tu stock por categoria, agrega items, ajusta cantidades y manten el control total de tus insumos desde la app.</p>
+                </div>
+                <div class="feature-mockup reveal">
+                    <img src="img/mockups/inventario.png" alt="Control de inventario">
+                </div>
+            </div>
+        </section>
+
+        <!-- MULTI-RESTAURANTE -->
+        <section id="multi-restaurante" class="multi-section">
+            <div class="container multi-content">
+                <div class="multi-text">
+                    <h2>Administra todas tus sucursales desde un solo lugar</h2>
+                    <p>Tienes mas de un restaurante? Con MenuFacilito puedes anadir todas tus sucursales y gestionarlas desde una misma cuenta. Cambia entre restaurantes con un toque y manten el control total de cada uno.</p>
+                    <div class="multi-features">
+                        <div class="multi-feature">
+                            <span>Multiples sucursales en una cuenta</span>
+                        </div>
+                        <div class="multi-feature">
+                            <span>Reportes independientes por local</span>
+                        </div>
+                        <div class="multi-feature">
+                            <span>Control de personal por sucursal</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="multi-mockup">
+                    <img src="img/mockups/posibilidad de a&#241;adir otro restaurante.png" alt="Anadir restaurante desde la app" class="reveal">
+                </div>
+            </div>
+        </section>
+
+        <!-- MENU DIGITAL EDITABLE -->
+        <section class="editable-section">
+            <div class="container editable-content">
+                <div class="editable-mockup">
+                    <img src="img/mockups/menu digital editable.png" alt="Menu digital editable" class="reveal">
+                </div>
+                <div class="editable-text">
+                    <h2>Tu menu, siempre actualizado</h2>
+                    <p>Edita platos, precios, descripciones y fotos al instante. Los cambios se reflejan inmediatamente en el menu que ven tus clientes. Sin esperas, sin costos adicionales.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PLANES -->
+        <section id="planes" class="pricing-section">
             <div class="container">
-                <h2>Un flujo de pedido que reduce el tiempo a la mitad</h2>
-                <div class="flow-steps">
-                    <div class="step reveal">
-                        <img src="img/mockups/menu_pedido.png" alt="Cliente explorando el menú digital interactivo">
-                        <p>El cliente explora el menú digital y ve los precios en tiempo real.</p>
-                    </div>
-                    <div class="step reveal">
-                        <img src="img/mockups/pedido.png" alt="Cliente ajustando las cantidades y añadiendo notas al pedido">
-                        <p>Ajusta cantidades y deja indicaciones, eliminando cualquier malentendido.</p>
-                    </div>
-                    <div class="step reveal">
-                        <img src="img/mockups/pedido_recibido.png" alt="Confirmación del pedido con tiempo de entrega estimado">
-                        <p>Confirma el pedido y recibe un tiempo de entrega estimado al instante.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="waiter-call" class="waiter-call-section">
-            <div class="container waiter-call-content">
-                <div class="waiter-call-images">
-                    <img src="img/mockups/opciones.png" alt="Opciones para llamar al mesero o pedir la cuenta" class="reveal">
-                    <img src="img/mockups/llamada_mesero.png" alt="Confirmación de llamada al mesero" class="reveal">
-                </div>
-                <div class="waiter-call-text">
-                    <h2>Atención a un solo toque</h2>
-                    <p>Se acabó la frustración de levantar la mano. Con MenuFacilito, tus comensales pueden llamar al mesero o pedir la cuenta directamente desde su móvil, mejorando radicalmente su experiencia.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="management" class="management-section">
-            <div class="container">
-                <h2>Controla tu operación en tiempo real</h2>
-                <p class="section-subtitle">Toma decisiones basadas en datos, acelera la rotación de mesas y optimiza tu cocina.</p>
-                <div class="management-grid">
-                    <div class="management-item reveal">
-                        <img src="img/mockups/orden.png" alt="Panel de gestión de órdenes en tiempo real">
-                        <h4>Órdenes agrupadas</h4>
-                        <p>Visualiza y gestiona todos los pedidos entrantes de forma clara y centralizada.</p>
-                    </div>
-                    <div class="management-item reveal">
-                        <img src="img/mockups/notificacion_mesero.png" alt="Notificación instantánea para el personal">
-                        <h4>Alertas instantáneas</h4>
-                        <p>Tu personal recibe notificaciones al momento para una atención inmediata.</p>
-                    </div>
-                    <div class="management-item reveal">
-                        <img src="img/mockups/ventas.png" alt="Dashboard de ventas y analíticas">
-                        <h4>Analíticas de venta</h4>
-                        <p>Analiza tu ticket promedio, los platos más vendidos y el rendimiento diario.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="benefits" class="benefits-section">
-            <div class="container">
-                <h3>Una solución vanguardista, pionera y disruptiva para tu negocio</h3>
-                <div class="benefits-icons">
-                    <div class="benefit-item">
-                        <span class="icon">✨</span>
-                        <p>Ofrece una experiencia de pedido moderna, autónoma y sin fricciones.</p>
-                    </div>
-                    <div class="benefit-item">
-                        <span class="icon">✏️</span>
-                        <p>Menú digital siempre actualizado, eliminando costos y demoras de impresión.</p>
-                    </div>
-                    <div class="benefit-item">
-                        <span class="icon">🇪🇨</span>
-                        <p>Integración nativa con el SRI para una facturación electrónica fluida y sin complicaciones.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="precios" class="pricing-section">
-            <div class="container">
-                <h2>Planes claros y sin sorpresas</h2>
+                <h2>Planes claros, sin sorpresas</h2>
+                <p class="section-subtitle">Elige el plan que mejor se adapte a tu restaurante. Todos los precios incluyen impuestos.</p>
                 <div class="pricing-grid">
+                    <!-- BASIC -->
                     <div class="pricing-card reveal">
-                        <h3>Free</h3>
-                        <p class="price">$0<span>/mes</span></p>
+                        <h3>Basic</h3>
+                        <p class="price">$49,99<span>/mes</span></p>
+                        <p class="price-note">Impuestos incluidos</p>
                         <ul class="features-list">
-                            <li>Menú digital con código QR</li>
-                            <li>Recepción de pedidos en panel</li>
-                            <li>Llamada a mesero y cuenta</li>
-                            <li> 450 pedidos mensuales</li>
+                            <li>Sistema de delivery propio</li>
+                            <li>Link personalizado para pedidos</li>
+                            <li>Sin comisiones por pedido</li>
+                            <li>Tus propios repartidores</li>
                         </ul>
-                        <a href="javascript:alert('¡Próximamente en las tiendas de aplicaciones!');" class="btn btn-secondary">Empieza gratis</a>
+                        <a href="#contacto" class="btn btn-outline-dark">Comenzar</a>
                     </div>
-                    <div class="pricing-card pro reveal">
-                        <h3>Premium</h3>
-                        <p class="price">$45<span>+IVA /mes</span></p>
+                    <!-- GROW -->
+                    <div class="pricing-card featured reveal">
+                        <div class="card-badge">Popular</div>
+                        <h3>Grow</h3>
+                        <p class="price">$79,99<span>/mes</span></p>
+                        <p class="price-note">Impuestos incluidos</p>
                         <ul class="features-list">
-                            <li>Todo lo del plan Free</li>
-                            <li>Pedidos ilimitados</li>
-                            <li>Analíticas de ventas avanzadas</li>
-                            <li>Facturación electrónica (SRI)</li>
+                            <li>Menu digital con QR</li>
+                            <li>Gestion de comandas</li>
+                            <li>Control del personal</li>
+                            <li>Cierre de caja</li>
+                            <li>Facturacion electronica ilimitada</li>
+                            <li>Reportes y metricas de ventas</li>
                         </ul>
-                        <a href="javascript:alert('¡Próximamente en las tiendas de aplicaciones!');" class="btn btn-primary">Empieza ahora</a>
+                        <a href="#contacto" class="btn btn-dark">Comenzar</a>
+                    </div>
+                    <!-- BUSINESS -->
+                    <div class="pricing-card reveal">
+                        <h3>Business</h3>
+                        <p class="price">$99,99<span>/mes</span></p>
+                        <p class="price-note">Impuestos incluidos</p>
+                        <ul class="features-list">
+                            <li>Todo lo del plan Grow</li>
+                            <li>Sistema de delivery propio</li>
+                            <li>Control de inventario</li>
+                            <li>La solucion mas completa</li>
+                        </ul>
+                        <a href="#contacto" class="btn btn-outline-dark">Comenzar</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="contacto" class="contact-section">
+        <!-- SOPORTE -->
+        <section id="contacto" class="support-section">
             <div class="container">
-                <div class="trust-badge">
-                    <!-- <div class="whatsapp-icon">
-                    </div> -->
-                    <img src="img/whatsapp.png" alt="Icono de WhatsApp">
-                    <div class="trust-text">
-                        <p><strong>Soporte por WhatsApp</strong></p>
-                        <p class="sri-compliance">Respuesta rápida y atención personalizada para resolver cualquier duda.</p>
+                <div class="support-card">
+                    <div class="support-card-inner">
+                        <div class="support-icon-wrap">
+                            <svg class="whatsapp-svg" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.744 3.054 9.378L1.056 31.29l6.118-1.96A15.9 15.9 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.342 22.616c-.39 1.1-1.932 2.012-3.182 2.278-.854.18-1.97.324-5.726-1.23-4.808-1.99-7.9-6.878-8.14-7.196-.23-.318-1.932-2.572-1.932-4.904s1.222-3.476 1.656-3.952c.434-.476.948-.596 1.264-.596.316 0 .632.002.908.016.29.014.682-.11 1.068.816.39.938 1.332 3.27 1.45 3.508.118.238.196.516.04.832-.158.318-.236.516-.474.794-.238.278-.5.62-.714.832-.238.238-.486.496-.208.972.278.476 1.234 2.036 2.65 3.298 1.822 1.624 3.358 2.126 3.834 2.364.476.238.754.198 1.032-.118.278-.318 1.194-1.39 1.512-1.866.318-.476.636-.396 1.07-.238.434.158 2.764 1.304 3.238 1.542.476.238.792.356.91.554.118.198.118 1.148-.272 2.248z" fill="#25D366"/></svg>
+                        </div>
+                        <div class="support-text">
+                            <h2>Soporte al cliente incluido</h2>
+                            <p>Tienes dudas o necesitas ayuda? Nuestro equipo de soporte esta disponible para asistirte en cada paso. Escribenos por WhatsApp y recibe atencion personalizada.</p>
+                            <a href="https://wa.me/593960866287" target="_blank" rel="noopener noreferrer" class="btn btn-dark">
+                                Escribenos
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="main-footer-dark">
+    <!-- FOOTER -->
+    <footer class="main-footer">
         <div class="container">
-            <div class="footer-links">
-                <a href="#">Términos y Condiciones</a>
-                <a href="#">Política de Privacidad</a>
-                <a href="mailto:contacto@menufacilito.com">contacto@menufacilito.com</a>
+            <div class="footer-top">
+                <div class="footer-links">
+                    <a href="#">Terminos y Condiciones</a>
+                    <a href="#">Politica de Privacidad</a>
+                    <a href="mailto:contacto@menufacilito.com">contacto@menufacilito.com</a>
+                </div>
             </div>
-            <p>&copy; 2025 MenuFacilito · Hecho en Ecuador</p>
+            <div class="footer-brand">
+                <span>MENUFACILITO</span>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 MenuFacilito</p>
+            </div>
         </div>
     </footer>
 
