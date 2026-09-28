@@ -114,12 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
         utcOffset: '-05:00',
         durationMin: 30,
         stepMin: 30,
-        workDays: [1, 2, 3, 4, 5], // 1 = lunes ... 7 = domingo
+        workDays: [1, 2, 3, 4, 5, 6, 7], // 1 = lunes ... 7 = domingo
         start: '09:00',
         end: '18:00',
         breaks: [['13:00', '14:00']],
         minNoticeHours: 3,
-        maxDaysAhead: 30
+        maxDaysAhead: 365
     };
     const scheduler = document.getElementById('scheduler');
     if (scheduler) initScheduler(scheduler);
@@ -149,7 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const lastStr = (() => { const d = new Date(ty, tm - 1, td + SCHEDULE.maxDaysAhead); return isoDate(d.getFullYear(), d.getMonth(), d.getDate()); })();
 
         let busy = [];
-        let busyLoaded = !endpoint;
+        let live = false;                 // se consulta el calendario solo cuando la sección está por verse
+        const loadedMonths = new Set();   // meses 'YYYY-MM' ya consultados
+        const pendingMonths = new Map();
+        const monthKey = (y, m) => y + '-' + pad(m + 1);
+        const isLoaded = key => !endpoint || loadedMonths.has(key);
         let viewYear = ty;
         let viewMonth = tm - 1;
         let selectedDate = null;
@@ -186,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
             els.next.disabled = isoDate(viewYear, viewMonth + 1, 1) > lastStr;
 
             els.days.textContent = '';
+            els.days.classList.toggle('is-loading', !isLoaded(monthKey(viewYear, viewMonth)));
             const offset = (first.getDay() + 6) % 7;
             for (let i = 0; i < offset; i++) els.days.appendChild(document.createElement('span'));
 
@@ -215,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             els.slotsTitle.textContent = 'Horarios para el ' + longDate(selectedDate);
-            if (!busyLoaded) {
+            if (!isLoaded(selectedDate.slice(0, 7))) {
                 for (let i = 0; i < 8; i++) {
                     const s = document.createElement('span');
                     s.className = 'slot-skeleton';
@@ -254,6 +259,42 @@ document.addEventListener('DOMContentLoaded', () => {
             els.cont.disabled = true;
             renderCalendar();
             renderSlots();
+            const [y, m] = dateStr.split('-').map(Number);
+            loadMonth(y, m - 1).then(() => {
+                if (selectedDate === dateStr) { renderCalendar(); renderSlots(); }
+            });
+        }
+
+        // Disponibilidad real desde Google Calendar, un mes a la vez
+        function loadMonth(y, m) {
+            const key = monthKey(y, m);
+            if (!endpoint || !live || loadedMonths.has(key)) return Promise.resolve();
+            if (pendingMonths.has(key)) return pendingMonths.get(key);
+            const next = new Date(y, m + 1, 1);
+            const from = new Date(isoDate(y, m, 1) + 'T00:00:00' + SCHEDULE.utcOffset);
+            const to = new Date(isoDate(next.getFullYear(), next.getMonth(), 1) + 'T00:00:00' + SCHEDULE.utcOffset);
+            const url = endpoint + (endpoint.includes('?') ? '&' : '?') +
+                'from=' + encodeURIComponent(from.toISOString()) + '&to=' + encodeURIComponent(to.toISOString());
+            const request = fetch(url)
+                .then(r => r.json())
+                .then(json => {
+                    (json.busy || []).forEach(b => busy.push({ start: Date.parse(b.start), end: Date.parse(b.end) }));
+                })
+                .catch(() => { /* sin datos en vivo: se muestran los horarios de atención */ })
+                .finally(() => {
+                    loadedMonths.add(key);
+                    pendingMonths.delete(key);
+                });
+            pendingMonths.set(key, request);
+            return request;
+        }
+
+        function showMonth() {
+            renderCalendar();
+            const key = monthKey(viewYear, viewMonth);
+            loadMonth(viewYear, viewMonth).then(() => {
+                if (monthKey(viewYear, viewMonth) === key) renderCalendar();
+            });
         }
 
         function selectFirstAvailable() {
@@ -288,12 +329,12 @@ document.addEventListener('DOMContentLoaded', () => {
         els.prev.addEventListener('click', () => {
             viewMonth--;
             if (viewMonth < 0) { viewMonth = 11; viewYear--; }
-            renderCalendar();
+            showMonth();
         });
         els.next.addEventListener('click', () => {
             viewMonth++;
             if (viewMonth > 11) { viewMonth = 0; viewYear++; }
-            renderCalendar();
+            showMonth();
         });
         els.cont.addEventListener('click', () => {
             goTo(2);
@@ -418,30 +459,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // --- Disponibilidad real desde Google Calendar ---
-        function loadBusy() {
-            fetch(endpoint)
-                .then(r => r.json())
-                .then(json => {
-                    busy = (json.busy || []).map(b => ({ start: Date.parse(b.start), end: Date.parse(b.end) }));
-                })
-                .catch(() => { /* sin datos en vivo: se muestran los horarios de oficina */ })
-                .finally(() => {
-                    busyLoaded = true;
-                    selectFirstAvailable();
-                });
-        }
-
         selectFirstAvailable();
         if (endpoint) {
-            // se consulta el calendario solo cuando la sección está por verse
+            const goLive = () => {
+                live = true;
+                loadMonth(ty, tm - 1).then(selectFirstAvailable);
+            };
             if ('IntersectionObserver' in window) {
                 const io = new IntersectionObserver(entries => {
-                    if (entries.some(en => en.isIntersecting)) { io.disconnect(); loadBusy(); }
+                    if (entries.some(en => en.isIntersecting)) { io.disconnect(); goLive(); }
                 }, { rootMargin: '400px 0px' });
                 io.observe(root);
             } else {
-                loadBusy();
+                goLive();
             }
         }
     }

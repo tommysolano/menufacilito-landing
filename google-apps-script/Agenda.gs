@@ -20,19 +20,31 @@ const CONFIG = {
   TIMEZONE: 'America/Guayaquil',
   DURATION_MIN: 30,                // duración de cada demo
   STEP_MIN: 30,                    // cada cuánto empieza un horario
-  WORK_DAYS: [1, 2, 3, 4, 5],      // 1 = lunes ... 7 = domingo
+  WORK_DAYS: [1, 2, 3, 4, 5, 6, 7], // 1 = lunes ... 7 = domingo
   START: '09:00',
   END: '18:00',
   BREAKS: [['13:00', '14:00']],
   MIN_NOTICE_HOURS: 3,
-  MAX_DAYS_AHEAD: 30,
+  MAX_DAYS_AHEAD: 365,
   EVENT_TITLE: 'Demo MenuFacilito · '
 };
 
-/** Devuelve los intervalos ocupados del calendario (sin detalles de los eventos). */
-function doGet() {
-  const from = new Date();
-  const to = new Date(from.getTime() + (CONFIG.MAX_DAYS_AHEAD + 1) * 864e5);
+/**
+ * Devuelve los intervalos ocupados (sin detalles de los eventos) entre ?from y ?to.
+ * La web pide un mes a la vez; Google no permite consultar rangos muy largos.
+ */
+function doGet(e) {
+  const p = (e && e.parameter) || {};
+  const now = new Date();
+  let from = p.from ? new Date(p.from) : now;
+  let to = p.to ? new Date(p.to) : new Date(now.getTime() + 31 * 864e5);
+  if (isNaN(from) || from < now) from = now;
+  const limit = new Date(Math.min(
+    from.getTime() + 40 * 864e5,
+    now.getTime() + (CONFIG.MAX_DAYS_AHEAD + 1) * 864e5
+  ));
+  if (isNaN(to) || to > limit) to = limit;
+  if (to <= from) return json_({ ok: true, busy: [] });
   return json_({ ok: true, busy: getBusy_(from, to) });
 }
 

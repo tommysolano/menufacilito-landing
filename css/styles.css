@@ -24,7 +24,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 84px;
+    scroll-padding-top: 96px;
 }
 
 body {
@@ -268,13 +268,17 @@ section { padding: 110px 0; }
     display: flex;
     align-items: center;
     gap: 40px;
-    height: 76px;
+    height: 116px;
+    transition: height 0.3s ease;
 }
+.main-header.scrolled .header-inner { height: 84px; }
 
 .logo img {
-    height: 62px;
+    height: 110px;
     width: auto;
+    transition: height 0.3s ease;
 }
+.main-header.scrolled .logo img { height: 76px; }
 
 .nav-main {
     display: flex;
@@ -825,6 +829,22 @@ section { padding: 110px 0; }
     color: var(--gray);
     letter-spacing: 0;
 }
+.price .price-tax {
+    display: block;
+    width: fit-content;
+    margin-top: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(0, 97, 95, 0.1);
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+.pricing-card.featured .price .price-tax {
+    background: rgba(250, 240, 202, 0.16);
+    color: var(--accent);
+}
 
 .features-list {
     list-style: none;
@@ -1038,6 +1058,9 @@ section { padding: 110px 0; }
     cursor: default;
     font-weight: 500;
 }
+/* mientras se consulta la disponibilidad del mes */
+#cal-days { transition: opacity 0.2s; }
+#cal-days.is-loading { opacity: 0.5; }
 
 /* slots */
 .slots-wrap { margin: 18px 0 20px; }
@@ -1666,8 +1689,10 @@ section { padding: 110px 0; }
     .card-badge { position: static; align-self: flex-start; margin-bottom: 16px; }
     section { padding: 72px 0; }
     .container { padding: 0 20px; }
-    .header-inner { height: 68px; }
-    .logo img { height: 44px; }
+    .header-inner { height: 84px; }
+    .logo img { height: 77px; }
+    .main-header.scrolled .header-inner { height: 68px; }
+    .main-header.scrolled .logo img { height: 58px; }
 
     .hero-section { padding: 48px 0 72px; }
     .hero-buttons .btn { width: 100%; }
