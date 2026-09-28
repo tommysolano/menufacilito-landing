@@ -184,7 +184,7 @@ section { padding: 80px 0; overflow: hidden; }
     align-items: center;
 }
 .logo img {
-    height: 50px;
+    height: 100px;
     width: auto;
     border-radius: 0;
     box-shadow: none;
@@ -282,11 +282,39 @@ section { padding: 80px 0; overflow: hidden; }
 
 
 /* ===================== */
+/*    INTRO / VALOR      */
+/* ===================== */
+.intro-section {
+    background-color: var(--cream);
+    padding: 100px 0 80px;
+    text-align: center;
+}
+
+.intro-heading {
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    color: var(--primary);
+    max-width: 780px;
+    margin: 0 auto 24px;
+    line-height: 1.3;
+}
+
+.intro-paragraph {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: var(--gray);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+
+/* ===================== */
 /*    MARQUEE BAR        */
 /* ===================== */
 .marquee-bar {
     background-color: var(--cream);
-    padding: 18px 0;
+    padding: 10px 0;
     overflow: hidden;
     white-space: nowrap;
     display: flex;
@@ -341,13 +369,13 @@ section { padding: 80px 0; overflow: hidden; }
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: rgba(255,255,255,0.6);
+    color: #faf0ca;
     margin-bottom: 8px;
 }
 
 .autoservicio-step-title {
     font-size: clamp(2.5rem, 6vw, 4rem);
-    color: var(--white);
+    color: var(--cream);
     margin-bottom: 20px;
     text-align: left;
 }
@@ -368,7 +396,7 @@ section { padding: 80px 0; overflow: hidden; }
 
 .slider-arrow {
     background: none;
-    border: 2px solid var(--cream);
+    border: none;
     color: var(--cream);
     width: 44px;
     height: 44px;
@@ -381,8 +409,8 @@ section { padding: 80px 0; overflow: hidden; }
     transition: background 0.3s, color 0.3s;
 }
 .slider-arrow:hover {
-    background: var(--cream);
-    color: var(--primary);
+    /* background: var(--cream); */
+    color: var(--cream);
 }
 
 .slider-dots {
