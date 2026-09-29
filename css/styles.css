@@ -1305,6 +1305,19 @@ body { padding-top: var(--header-h); }
 .sch-done h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 8px; }
 .sch-done > p { color: var(--gray); margin-bottom: 22px; }
 .sch-done .sch-summary { text-align: left; }
+.done-wa {
+    margin-top: 4px;
+    padding-top: 20px;
+    border-top: 1px solid var(--light-gray);
+}
+.done-wa[hidden] { display: none; }
+.done-wa p { margin-bottom: 12px; font-size: 0.92rem; color: var(--gray); }
+.btn-whatsapp {
+    background: var(--whatsapp);
+    color: var(--white);
+}
+.btn-whatsapp:hover { box-shadow: 0 10px 24px rgba(37, 211, 102, 0.35); }
+.btn-whatsapp svg { width: 20px; height: 20px; }
 .done-icon { width: 76px; height: 76px; margin: 0 auto 18px; }
 .done-icon svg { width: 100%; height: 100%; }
 .done-icon circle {

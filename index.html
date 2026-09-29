@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css?v=8">
+    <link rel="stylesheet" href="css/styles.css?v=9">
 </head>
 <body>
 
@@ -505,7 +505,13 @@
                             </span>
                             <span class="sch-summary-text"><strong class="js-sum-date"></strong><span class="js-sum-time"></span></span>
                         </div>
-                        <a href="#" class="btn btn-outline btn-block" id="done-whatsapp" target="_blank" rel="noopener" hidden>Abrir WhatsApp de nuevo</a>
+                        <div class="done-wa" id="done-wa-box" hidden>
+                            <p id="done-wa-hint">¿Quieres hablar con nosotros antes de la demo? Escríbenos y te respondemos directamente.</p>
+                            <a href="#" class="btn btn-whatsapp btn-block" id="done-whatsapp" target="_blank" rel="noopener">
+                                <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.744 3.054 9.378L1.056 31.29l6.118-1.96A15.9 15.9 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.342 22.616c-.39 1.1-1.932 2.012-3.182 2.278-.854.18-1.97.324-5.726-1.23-4.808-1.99-7.9-6.878-8.14-7.196-.23-.318-1.932-2.572-1.932-4.904s1.222-3.476 1.656-3.952c.434-.476.948-.596 1.264-.596.316 0 .632.002.908.016.29.014.682-.11 1.068.816.39.938 1.332 3.27 1.45 3.508.118.238.196.516.04.832-.158.318-.236.516-.474.794-.238.278-.5.62-.714.832-.238.238-.486.496-.208.972.278.476 1.234 2.036 2.65 3.298 1.822 1.624 3.358 2.126 3.834 2.364.476.238.754.198 1.032-.118.278-.318 1.194-1.39 1.512-1.866.318-.476.636-.396 1.07-.238.434.158 2.764 1.304 3.238 1.542.476.238.792.356.91.554.118.198.118 1.148-.272 2.248z"/></svg>
+                                <span id="done-wa-label">Escríbenos por WhatsApp</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -659,6 +665,6 @@
         </button>
     </div>
 
-    <script src="js/main.js?v=9"></script>
+    <script src="js/main.js?v=10"></script>
 </body>
 </html>

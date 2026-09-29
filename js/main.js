@@ -379,17 +379,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Correo: ' + d.email;
         }
 
+        // Mensaje para escribirnos por WhatsApp después de agendar en Google Calendar
+        function bookedMessage(d) {
+            return 'Hola, acabo de agendar una demo de MenuFacilito para el ' +
+                longDate(selectedDate) + ' a las ' + fmtTime(selectedMin) + ' (hora de Ecuador).\n' +
+                'Soy ' + d.name + ' de ' + d.business + '.' +
+                (d.plan ? '\nMe interesa el plan ' + d.plan + '.' : '');
+        }
+
         function showDone(viaCalendar) {
+            const hint = $('done-wa-hint');
+            const label = $('done-wa-label');
             if (viaCalendar) {
                 els.doneTitle.textContent = '¡Tu demo está agendada!';
                 els.doneText.textContent = 'Te enviamos la invitación con el enlace de la videollamada a ' + lastData.email + '. Si no la ves, revisa tu carpeta de spam.';
-                els.doneWa.hidden = true;
+                hint.textContent = '¿Quieres hablar con nosotros antes de la demo? Escríbenos y te respondemos directamente.';
+                label.textContent = 'Escríbenos por WhatsApp';
+                els.doneWa.href = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(bookedMessage(lastData));
             } else {
                 els.doneTitle.textContent = '¡Ya casi está!';
                 els.doneText.textContent = 'Abrimos WhatsApp con los datos de tu cita. Envía el mensaje para confirmarla y te responderemos enseguida.';
+                hint.textContent = '¿No se abrió WhatsApp?';
+                label.textContent = 'Abrir WhatsApp de nuevo';
                 els.doneWa.href = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(whatsappMessage(lastData));
-                els.doneWa.hidden = false;
             }
+            $('done-wa-box').hidden = false;
             goTo(3);
         }
 

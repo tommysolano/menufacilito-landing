@@ -88,6 +88,7 @@ function doPost(e) {
         'Locales: ' + branches + '\n' +
         (plan ? 'Plan de interés: ' + plan + '\n' : '') +
         'Teléfono / WhatsApp: ' + phone + '\n' +
+        'Abrir WhatsApp: ' + whatsappLink_(phone) + '\n' +
         'Correo: ' + email,
       start: { dateTime: start.toISOString(), timeZone: CONFIG.TIMEZONE },
       end: { dateTime: end.toISOString(), timeZone: CONFIG.TIMEZONE },
@@ -126,7 +127,30 @@ function doPost(e) {
 function notifyTeam_(c) {
   try {
     const to = CONFIG.NOTIFY_EMAIL || Session.getEffectiveUser().getEmail();
-    const when = Utilities.formatDate(c.start, CONFIG.TIMEZONE, "EEEE d 'de' MMMM, HH:mm");
+    const when = spanishDate_(c.start);
+    const wa = whatsappLink_(c.phone, 'Hola ' + c.name + ', te escribimos de MenuFacilito por la demo que agendaste para el ' + when + '.');
+    const esc = htmlEscape_;
+
+    const rows = [
+      ['Fecha', esc(when) + ' (hora de Ecuador)'],
+      ['Nombre', esc(c.name)],
+      ['Restaurante', esc(c.business)],
+      ['Locales', esc(c.branches)]
+    ];
+    if (c.plan) rows.push(['Plan de interés', esc(c.plan)]);
+    rows.push(['Teléfono / WhatsApp', '<a href="' + wa + '">' + esc(c.phone) + '</a> (clic para abrir WhatsApp)']);
+    rows.push(['Correo', '<a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a>']);
+
+    const html =
+      '<p>Se agendó una nueva demo desde <a href="https://menufacilito.com">menufacilito.com</a></p>' +
+      '<table cellpadding="4" style="border-collapse:collapse">' +
+      rows.map(r => '<tr><td style="color:#6b6b6b;padding-right:12px">' + r[0] + ':</td><td>' + r[1] + '</td></tr>').join('') +
+      '</table>' +
+      '<p><a href="' + wa + '" style="display:inline-block;padding:10px 18px;background:#25D366;color:#fff;border-radius:999px;text-decoration:none;font-weight:bold">Escribirle por WhatsApp</a></p>' +
+      (c.meet ? '<p>Google Meet: <a href="' + c.meet + '">' + c.meet + '</a></p>' : '') +
+      '<p><a href="' + c.link + '">Ver en Google Calendar</a></p>' +
+      '<p style="color:#6b6b6b">Puedes responder este correo para escribirle directamente al cliente.</p>';
+
     MailApp.sendEmail({
       to: to,
       replyTo: c.email,
@@ -138,15 +162,35 @@ function notifyTeam_(c) {
         'Restaurante: ' + c.business + '\n' +
         'Locales: ' + c.branches + '\n' +
         (c.plan ? 'Plan de interés: ' + c.plan + '\n' : '') +
-        'Teléfono / WhatsApp: ' + c.phone + '\n' +
+        'Teléfono / WhatsApp: ' + c.phone + ' · ' + wa + '\n' +
         'Correo: ' + c.email + '\n\n' +
         (c.meet ? 'Google Meet: ' + c.meet + '\n' : '') +
         'Ver en Google Calendar: ' + c.link + '\n\n' +
-        'Puedes responder este correo para escribirle directamente al cliente.'
+        'Puedes responder este correo para escribirle directamente al cliente.',
+      htmlBody: html
     });
   } catch (err) {
     console.error('No se pudo enviar el aviso: ' + err);
   }
+}
+
+/** Enlace de WhatsApp (wa.me) con el número del cliente y un mensaje inicial. */
+function whatsappLink_(phone, text) {
+  const digits = String(phone).replace(/\D/g, '');
+  return 'https://wa.me/' + digits + (text ? '?text=' + encodeURIComponent(text) : '');
+}
+
+/** "martes 29 de septiembre, 09:00" (Apps Script formatea en inglés por defecto). */
+function spanishDate_(date) {
+  const days = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+  const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio',
+    'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const f = pattern => Utilities.formatDate(date, CONFIG.TIMEZONE, pattern);
+  return days[Number(f('u')) - 1] + ' ' + Number(f('d')) + ' de ' + months[Number(f('M')) - 1] + ', ' + f('HH:mm');
+}
+
+function htmlEscape_(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 function getBusy_(from, to) {
