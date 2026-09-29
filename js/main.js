@@ -1,5 +1,9 @@
 document.documentElement.classList.add('js');
 
+// Testimonios de clientes REALES (con su permiso). La sección aparece sola cuando hay al menos uno.
+// Formato: { name: 'Andrea V.', business: 'Nombre del restaurante', rating: 5, text: 'Lo que dijo el cliente.' }
+const TESTIMONIALS = [];
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Reveal on Scroll ---
@@ -20,7 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Header shadow on scroll ---
     const header = document.querySelector('.main-header');
-    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 8);
+    // Dos umbrales distintos para que no alterne justo en el límite
+    const onScroll = () => {
+        const y = window.scrollY;
+        if (y > 60) header.classList.add('scrolled');
+        else if (y < 20) header.classList.remove('scrolled');
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
@@ -122,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         maxDaysAhead: 365
     };
     const scheduler = document.getElementById('scheduler');
-    if (scheduler) initScheduler(scheduler);
+    const schedulerApi = scheduler ? initScheduler(scheduler) : null;
 
     function initScheduler(root) {
         const endpoint = root.dataset.endpoint.trim();
@@ -362,6 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function whatsappMessage(d) {
             return 'Hola, quiero agendar una demo de MenuFacilito.\n' +
+                (d.plan ? 'Plan de interés: ' + d.plan + '\n' : '') +
                 'Fecha: ' + longDate(selectedDate) + ', ' + timeRange(selectedMin) + '\n' +
                 'Nombre: ' + d.name + '\n' +
                 'Restaurante: ' + d.business + ' (' + d.branches + ')\n' +
@@ -425,6 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 phone: country + ' ' + local,
                 email: f.email.value.trim(),
                 branches: f.branches.value,
+                plan: root.dataset.plan || '',
                 website: f.website.value,
                 start: start.toISOString()
             };
@@ -474,9 +485,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 goLive();
             }
         }
+
+        return {
+            setPlan(plan) {
+                if (plan) root.dataset.plan = plan;
+                else delete root.dataset.plan;
+            },
+            // al volver a abrir después de agendar, empezar de nuevo
+            resetIfDone() {
+                if (root.querySelector('.sch-step[data-step="3"]').hidden) return;
+                els.form.reset();
+                selectFirstAvailable();
+                goTo(1);
+            }
+        };
     }
 
     // --- WhatsApp chat widget ---
+    let openChat = () => openWhatsApp('Hola, quiero información sobre MenuFacilito.');
     if (widget) {
         const panel = document.getElementById('wa-panel');
         const launcher = document.getElementById('wa-launcher');
@@ -541,6 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
             openWhatsApp(text);
         }
 
+        openChat = () => setOpen(true);
         launcher.addEventListener('click', () => setOpen(panel.hidden));
         closeBtn.addEventListener('click', () => setOpen(false));
         document.addEventListener('keydown', e => {
@@ -572,6 +599,178 @@ document.addEventListener('DOMContentLoaded', () => {
             teaser.hidden = true;
             storage.set('wa-seen', '1');
         });
+    }
+
+    // --- Modal: agenda una demo ---
+    // El mismo agendador de la sección #demo se mueve al modal mientras está abierto.
+    const PLANS = {
+        Delivery: {
+            price: '$49,99/mes',
+            text: 'Ideal para dark kitchens y markets. Agenda una demo gratuita: te mostramos cómo vender a domicilio con tu propio link de pedidos, sin comisiones.'
+        },
+        Business: {
+            price: '$99,99/mes',
+            text: 'Agenda una demo gratuita: te mostramos cómo administrar todo tu restaurante desde una sola app.'
+        }
+    };
+    const modal = document.getElementById('demo-modal');
+    if (modal && scheduler && schedulerApi) {
+        const dialog = modal.querySelector('.modal-dialog');
+        const modalBody = document.getElementById('modal-body');
+        const home = document.createComment('agendador');
+        scheduler.parentNode.insertBefore(home, scheduler);
+        let lastTrigger = null;
+        const setText = (id, text) => { document.getElementById(id).textContent = text; };
+
+        function openModal(plan, trigger) {
+            lastTrigger = trigger || null;
+            const info = PLANS[plan];
+            setText('modal-eyebrow', info ? 'Plan ' + plan + ' · ' + info.price + ' · IVA incluido' : 'Demo gratuita · Sin compromiso');
+            setText('modal-title', info ? 'Empieza con el plan ' + plan : 'Agenda una demo');
+            setText('modal-text', info ? info.text : 'Elige el día y la hora y te mostramos MenuFacilito en una videollamada.');
+            schedulerApi.setPlan(plan);
+            schedulerApi.resetIfDone();
+            modalBody.appendChild(scheduler);
+
+            const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+            document.documentElement.style.setProperty('--scrollbar', scrollbar + 'px');
+            document.documentElement.classList.add('modal-open');
+            modal.hidden = false;
+            dialog.scrollTop = 0;
+            modal.querySelector('.modal-close').focus();
+        }
+
+        function closeModal() {
+            if (modal.hidden) return;
+            modal.hidden = true;
+            document.documentElement.classList.remove('modal-open');
+            home.parentNode.insertBefore(scheduler, home.nextSibling);
+            schedulerApi.setPlan('');
+            if (lastTrigger) lastTrigger.focus({ preventScroll: true });
+        }
+
+        document.querySelectorAll('[data-open-demo]').forEach(el => {
+            el.addEventListener('click', e => {
+                e.preventDefault();
+                openModal(el.dataset.plan || '', el);
+            });
+        });
+        modal.querySelectorAll('[data-close-modal]').forEach(el => el.addEventListener('click', closeModal));
+
+        document.addEventListener('keydown', e => {
+            if (modal.hidden) return;
+            if (e.key === 'Escape') {
+                closeModal();
+                return;
+            }
+            // mantener el foco dentro del modal
+            if (e.key === 'Tab') {
+                const focusables = [...dialog.querySelectorAll('a[href], button:not([disabled]), input:not(.hp), select')]
+                    .filter(el => el.offsetParent !== null);
+                const first = focusables[0];
+                const last = focusables[focusables.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            }
+        });
+    }
+
+    // --- Botones "habla con un asesor" ---
+    document.querySelectorAll('[data-open-chat]').forEach(btn => {
+        btn.addEventListener('click', () => openChat());
+    });
+
+    // --- Calculadora de ahorro ---
+    const calcSales = document.getElementById('calc-sales');
+    const calcFee = document.getElementById('calc-fee');
+    if (calcSales && calcFee) {
+        const PLAN_DELIVERY = 49.99;
+        const $ = id => document.getElementById(id);
+        const money = n => '$' + n.toLocaleString('es-EC', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const saveEl = $('calc-save');
+        let shown = 0;
+        let frame = null;
+
+        // anima la cifra de ahorro hasta el nuevo valor
+        function animateTo(target) {
+            cancelAnimationFrame(frame);
+            const from = shown;
+            const t0 = performance.now();
+            const step = now => {
+                const p = Math.min((now - t0) / 350, 1);
+                shown = from + (target - from) * (1 - Math.pow(1 - p, 3));
+                saveEl.textContent = money(shown);
+                if (p < 1) frame = requestAnimationFrame(step);
+            };
+            frame = requestAnimationFrame(step);
+        }
+
+        const paintTrack = input => {
+            const pct = (input.value - input.min) / (input.max - input.min) * 100;
+            input.style.setProperty('--fill', pct + '%');
+        };
+
+        function updateCalc() {
+            const sales = Number(calcSales.value);
+            const fee = Number(calcFee.value);
+            const fees = sales * fee / 100;
+            const save = Math.max(fees - PLAN_DELIVERY, 0);
+            $('calc-sales-out').textContent = '$' + sales.toLocaleString('es-EC');
+            $('calc-fee-out').textContent = fee + '%';
+            $('calc-fees').textContent = money(fees) + '/mes';
+            $('calc-year').textContent = save > 0
+                ? 'al mes · ' + money(save * 12) + ' al año'
+                : 'Con estas ventas, la comisión aún es menor que el plan';
+            animateTo(save);
+            paintTrack(calcSales);
+            paintTrack(calcFee);
+        }
+        calcSales.addEventListener('input', updateCalc);
+        calcFee.addEventListener('input', updateCalc);
+        updateCalc();
+    }
+
+    // --- Preguntas frecuentes: una abierta a la vez ---
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        item.addEventListener('toggle', () => {
+            if (item.open) faqItems.forEach(other => { if (other !== item) other.open = false; });
+        });
+    });
+
+    // --- Testimonios ---
+    const tSection = document.getElementById('testimonios');
+    if (tSection && TESTIMONIALS.length) {
+        const track = document.getElementById('t-track');
+        TESTIMONIALS.forEach(t => {
+            const rating = Math.max(1, Math.min(5, Number(t.rating) || 5));
+            const card = document.createElement('article');
+            card.className = 't-card';
+
+            const stars = document.createElement('p');
+            stars.className = 't-stars';
+            stars.setAttribute('aria-label', rating + ' de 5 estrellas');
+            stars.textContent = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+
+            const text = document.createElement('p');
+            text.className = 't-text';
+            text.textContent = '“' + t.text + '”';
+
+            const who = document.createElement('p');
+            who.className = 't-who';
+            const name = document.createElement('strong');
+            name.textContent = t.name;
+            const business = document.createElement('span');
+            business.textContent = t.business;
+            who.append(name, business);
+
+            card.append(stars, text, who);
+            track.appendChild(card);
+        });
+        tSection.hidden = false;
+        const scrollTrack = dir => track.scrollBy({ left: dir * track.clientWidth * 0.8, behavior: 'smooth' });
+        document.getElementById('t-prev').addEventListener('click', () => scrollTrack(-1));
+        document.getElementById('t-next').addEventListener('click', () => scrollTrack(1));
     }
 
     // --- Año del footer ---

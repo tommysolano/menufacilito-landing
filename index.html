@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css?v=7">
+    <link rel="stylesheet" href="css/styles.css?v=8">
 </head>
 <body>
 
@@ -29,8 +29,9 @@
                 <a href="#como-funciona">Cómo funciona</a>
                 <a href="#multi-sucursal">Multi-sucursal</a>
                 <a href="#planes">Planes</a>
+                <a href="#preguntas">Preguntas</a>
             </nav>
-            <a href="#demo" class="btn btn-cream btn-sm header-cta">Agenda una demo</a>
+            <a href="#demo" class="btn btn-cream btn-sm header-cta" data-open-demo>Agenda una demo</a>
             <button class="mobile-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-nav">
                 <span></span>
                 <span></span>
@@ -42,7 +43,8 @@
             <a href="#como-funciona">Cómo funciona</a>
             <a href="#multi-sucursal">Multi-sucursal</a>
             <a href="#planes">Planes</a>
-            <a href="#demo" class="btn btn-cream">Agenda una demo</a>
+            <a href="#preguntas">Preguntas</a>
+            <a href="#demo" class="btn btn-cream" data-open-demo>Agenda una demo</a>
         </nav>
     </header>
 
@@ -55,7 +57,7 @@
                     <h1>Gestiona tu restaurante desde una sola app</h1>
                     <p class="hero-subtitle">Comandas, menú digital con QR, delivery, facturación electrónica, reportes e inventario. Todo lo que necesitas para vender más y controlar tu negocio, sin comisiones por pedido.</p>
                     <div class="hero-buttons">
-                        <a href="#demo" class="btn btn-cream">Agenda una demo gratis</a>
+                        <a href="#demo" class="btn btn-cream" data-open-demo>Agenda una demo gratis</a>
                         <a href="#planes" class="btn btn-ghost-light">Ver planes</a>
                     </div>
                     <ul class="hero-trust">
@@ -153,6 +155,15 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="cta-pill reveal">
+                    <div class="cta-pill-avatar" aria-hidden="true">
+                        <img src="img/logo.svg" alt="" width="64" height="62">
+                        <span class="cta-pill-dot"></span>
+                    </div>
+                    <p class="cta-pill-text">¿Quieres ver cómo funcionaría en tu restaurante? <strong>Te ayudamos.</strong></p>
+                    <button type="button" class="btn btn-teal" data-open-chat>Habla con un asesor</button>
+                </div>
             </div>
         </section>
 
@@ -235,6 +246,51 @@
             </div>
         </section>
 
+        <!-- CALCULADORA DE AHORRO -->
+        <section id="ahorro" class="calc-section">
+            <div class="container calc-layout">
+                <div class="calc-text reveal">
+                    <p class="eyebrow">Calculadora de ahorro</p>
+                    <h2>¿Cuánto te cuestan hoy las apps de delivery?</h2>
+                    <p>Mueve los controles con los números de tu restaurante y descubre cuánto podrías ahorrar vendiendo a domicilio con tu propio link de pedidos, sin comisiones.</p>
+                    <ul class="check-list">
+                        <li>Tu propio link de pedidos para redes y WhatsApp</li>
+                        <li>Tarifa fija mensual, vendas lo que vendas</li>
+                        <li>Tus clientes y tus datos quedan contigo</li>
+                    </ul>
+                </div>
+                <div class="calc-card reveal">
+                    <div class="calc-field">
+                        <div class="calc-label">
+                            <label for="calc-sales">Ventas mensuales por delivery</label>
+                            <output id="calc-sales-out" for="calc-sales">$3.000</output>
+                        </div>
+                        <input type="range" id="calc-sales" min="500" max="20000" step="100" value="3000">
+                        <div class="calc-scale"><span>$500</span><span>$20.000</span></div>
+                    </div>
+                    <div class="calc-field">
+                        <div class="calc-label">
+                            <label for="calc-fee">Comisión de tu app actual</label>
+                            <output id="calc-fee-out" for="calc-fee">25%</output>
+                        </div>
+                        <input type="range" id="calc-fee" min="5" max="35" step="1" value="25">
+                        <div class="calc-scale"><span>5%</span><span>35%</span></div>
+                    </div>
+                    <div class="calc-result">
+                        <div class="calc-row"><span>Pagas en comisiones</span><strong id="calc-fees">$750,00/mes</strong></div>
+                        <div class="calc-row"><span>Plan Delivery (IVA incluido)</span><strong>$49,99/mes</strong></div>
+                        <div class="calc-total">
+                            <span>Podrías ahorrar</span>
+                            <strong id="calc-save">$700,01</strong>
+                            <small id="calc-year">al mes · $8.400,12 al año</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-teal btn-block" data-open-demo data-plan="Delivery">Quiero empezar a ahorrar</button>
+                    <p class="calc-note">Cálculo referencial. No incluye el costo de tus repartidores.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- PLANES -->
         <section id="planes" class="pricing-section">
             <div class="container">
@@ -253,6 +309,10 @@
                             <h3>Delivery</h3>
                         </div>
                         <p class="plan-desc">Vende a domicilio con tu propio canal, sin pagar comisiones a apps de terceros.</p>
+                        <p class="plan-ideal">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            Ideal para <strong>dark kitchens</strong> y <strong>markets</strong>
+                        </p>
                         <p class="price">$49,99<span>/mes</span><small class="price-tax">IVA incluido</small></p>
                         <p class="features-title">Incluye:</p>
                         <ul class="features-list">
@@ -261,7 +321,7 @@
                             <li>Sin comisiones por pedido</li>
                             <li>Tus propios repartidores</li>
                         </ul>
-                        <a href="#demo" class="btn btn-outline">Comenzar con Delivery</a>
+                        <a href="#demo" class="btn btn-outline" data-open-demo data-plan="Delivery">Comenzar con Delivery</a>
                     </div>
                     <!-- BUSINESS -->
                     <div class="pricing-card featured reveal">
@@ -284,10 +344,31 @@
                             <li>Reportes y métricas de ventas</li>
                             <li>Control de inventario</li>
                         </ul>
-                        <a href="#demo" class="btn btn-cream">Comenzar con Business</a>
+                        <a href="#demo" class="btn btn-cream" data-open-demo data-plan="Business">Comenzar con Business</a>
                     </div>
                 </div>
-                <p class="pricing-note">¿No sabes qué plan elegir? <a href="#demo">Agenda una demo</a> y te ayudamos a decidir.</p>
+                <p class="pricing-note">¿No sabes qué plan elegir? <a href="#demo" data-open-demo>Agenda una demo</a> y te ayudamos a decidir.</p>
+            </div>
+        </section>
+
+        <!-- TESTIMONIOS: se muestra solo cuando hay testimonios en TESTIMONIALS (js/main.js) -->
+        <section id="testimonios" class="testimonials-section" hidden>
+            <div class="container">
+                <div class="t-head">
+                    <div>
+                        <p class="eyebrow eyebrow-light">Testimonios</p>
+                        <h2>Lo que dicen los restaurantes que usan MenuFacilito</h2>
+                    </div>
+                    <div class="t-controls">
+                        <button type="button" class="t-arrow" id="t-prev" aria-label="Testimonio anterior">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        </button>
+                        <button type="button" class="t-arrow" id="t-next" aria-label="Testimonio siguiente">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="t-track" id="t-track"></div>
             </div>
         </section>
 
@@ -429,7 +510,71 @@
                 </div>
             </div>
         </section>
+        <!-- PREGUNTAS FRECUENTES -->
+        <section id="preguntas" class="faq-section">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Preguntas frecuentes</p>
+                    <h2>Resolvemos tus dudas</h2>
+                </div>
+                <div class="faq-list">
+                    <details class="faq-item" open>
+                        <summary>¿Los precios incluyen IVA?<span class="faq-icon" aria-hidden="true"></span></summary>
+                        <div class="faq-answer"><p>Sí. El plan Delivery cuesta $49,99 al mes y el plan Business $99,99 al mes, ambos con IVA incluido. No hay cargos ocultos.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Cobran comisión por cada pedido?<span class="faq-icon" aria-hidden="true"></span></summary>
+                        <div class="faq-answer"><p>No. Pagas una tarifa fija mensual y todos los pedidos que recibas por tu link de delivery son tuyos, sin comisiones por venta.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Hay un límite de facturas electrónicas?<span class="faq-icon" aria-hidden="true"></span></summary>
+                        <div class="faq-answer"><p>No. En el plan Business emites facturas electrónicas autorizadas por el SRI de forma ilimitada, sin costo adicional por factura.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Mis clientes tienen que descargar una app?<span class="faq-icon" aria-hidden="true"></span></summary>
+                        <div class="faq-answer"><p>No. Escanean el código QR de la mesa o abren tu link de pedidos y el menú se abre directamente en el navegador de su celular.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Puedo administrar varias sucursales?<span class="faq-icon" aria-hidden="true"></span></summary>
+                        <div class="faq-answer"><p>Sí. Puedes añadir todas tus sucursales a la misma cuenta, cambiar entre ellas con un toque y ver reportes independientes por local.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Qué plan me conviene?<span class="faq-icon" aria-hidden="true"></span></summary>
+                        <div class="faq-answer"><p>Si solo quieres vender a domicilio sin pagar comisiones, el plan Delivery es para ti: es ideal para dark kitchens y markets. Si quieres administrar todo tu restaurante (comandas, menú QR, caja, facturación, reportes e inventario), elige Business. En la demo te ayudamos a decidir.</p></div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Cómo es la demo?<span class="faq-icon" aria-hidden="true"></span></summary>
+                        <div class="faq-answer"><p>Es una videollamada gratuita y sin compromiso. Eliges el día y la hora, te mostramos la app con ejemplos para tu tipo de restaurante y resolvemos todas tus dudas.</p></div>
+                    </details>
+                </div>
+
+                <div class="cta-pill reveal">
+                    <div class="cta-pill-avatar" aria-hidden="true">
+                        <img src="img/logo.svg" alt="" width="64" height="62">
+                        <span class="cta-pill-dot"></span>
+                    </div>
+                    <p class="cta-pill-text">¿Tienes otra pregunta? <strong>Escríbenos por WhatsApp.</strong></p>
+                    <button type="button" class="btn btn-teal" data-open-chat>Chatea con nosotros</button>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <!-- MODAL: agenda una demo -->
+    <div class="modal" id="demo-modal" hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <div class="modal-intro">
+                <p class="eyebrow" id="modal-eyebrow">Demo gratuita · Sin compromiso</p>
+                <h3 id="modal-title">Agenda una demo</h3>
+                <p id="modal-text">Elige el día y la hora y te mostramos MenuFacilito en una videollamada.</p>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
 
     <!-- FOOTER -->
     <footer class="main-footer">
@@ -445,10 +590,12 @@
                     <a href="#como-funciona">Cómo funciona</a>
                     <a href="#multi-sucursal">Multi-sucursal</a>
                     <a href="#planes">Planes</a>
+                    <a href="#ahorro">Calculadora de ahorro</a>
+                    <a href="#preguntas">Preguntas frecuentes</a>
                 </div>
                 <div class="footer-col">
                     <h4>Contacto</h4>
-                    <a href="#demo">Agenda una demo</a>
+                    <a href="#demo" data-open-demo>Agenda una demo</a>
                     <a href="https://wa.me/593988818168" target="_blank" rel="noopener">WhatsApp: +593 98 881 8168</a>
                     <span>Ecuador</span>
                 </div>
@@ -512,6 +659,6 @@
         </button>
     </div>
 
-    <script src="js/main.js?v=5"></script>
+    <script src="js/main.js?v=8"></script>
 </body>
 </html>

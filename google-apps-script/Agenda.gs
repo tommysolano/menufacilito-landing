@@ -61,6 +61,7 @@ function doPost(e) {
     const email = clean_(d.email, 120);
     const phone = clean_(d.phone, 25);
     const branches = clean_(d.branches, 20);
+    const plan = clean_(d.plan, 20);
     if (!name || !business || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !/^\+?[\d\s]{7,20}$/.test(phone)) {
       return json_({ ok: false, error: 'invalid_data' });
     }
@@ -79,6 +80,7 @@ function doPost(e) {
         'Nombre: ' + name + '\n' +
         'Restaurante: ' + business + '\n' +
         'Locales: ' + branches + '\n' +
+        (plan ? 'Plan de interés: ' + plan + '\n' : '') +
         'Teléfono / WhatsApp: ' + phone + '\n' +
         'Correo: ' + email,
       start: { dateTime: start.toISOString(), timeZone: CONFIG.TIMEZONE },
