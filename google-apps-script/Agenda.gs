@@ -26,7 +26,13 @@ const CONFIG = {
   BREAKS: [['13:00', '14:00']],
   MIN_NOTICE_HOURS: 3,
   MAX_DAYS_AHEAD: 365,
-  EVENT_TITLE: 'Demo MenuFacilito · '
+  EVENT_TITLE: 'Demo MenuFacilito · ',
+  // Quién recibe el aviso de cada cita nueva. Vacío = la cuenta que publica el script.
+  // Para varias personas: 'ventas@menufacilito.com, otra@correo.com'
+  NOTIFY_EMAIL: '',
+  // Recordatorios del evento en el calendario del negocio (minutos antes)
+  REMINDER_POPUP_MIN: 30,
+  REMINDER_EMAIL_MIN: 60
 };
 
 /**
@@ -88,11 +94,24 @@ function doPost(e) {
       attendees: [{ email: email, displayName: name }],
       conferenceData: {
         createRequest: { requestId: Utilities.getUuid(), conferenceSolutionKey: { type: 'hangoutsMeet' } }
+      },
+      reminders: {
+        useDefault: false,
+        overrides: [
+          { method: 'popup', minutes: CONFIG.REMINDER_POPUP_MIN },
+          { method: 'email', minutes: CONFIG.REMINDER_EMAIL_MIN }
+        ]
       }
     };
     const created = Calendar.Events.insert(event, CONFIG.CALENDAR_ID, {
       conferenceDataVersion: 1,
       sendUpdates: 'all'
+    });
+
+    notifyTeam_({
+      name: name, business: business, email: email, phone: phone,
+      branches: branches, plan: plan, start: start,
+      link: created.htmlLink, meet: created.hangoutLink
     });
     return json_({ ok: true, meet: created.hangoutLink || '' });
   } catch (err) {
@@ -100,6 +119,33 @@ function doPost(e) {
     return json_({ ok: false, error: 'server_error' });
   } finally {
     lock.releaseLock();
+  }
+}
+
+/** Envía un correo al equipo con los datos de la cita. Si falla, la cita igual queda creada. */
+function notifyTeam_(c) {
+  try {
+    const to = CONFIG.NOTIFY_EMAIL || Session.getEffectiveUser().getEmail();
+    const when = Utilities.formatDate(c.start, CONFIG.TIMEZONE, "EEEE d 'de' MMMM, HH:mm");
+    MailApp.sendEmail({
+      to: to,
+      replyTo: c.email,
+      subject: 'Nueva demo agendada: ' + c.business + ' · ' + when,
+      body:
+        'Se agendó una nueva demo desde menufacilito.com\n\n' +
+        'Fecha: ' + when + ' (hora de Ecuador)\n' +
+        'Nombre: ' + c.name + '\n' +
+        'Restaurante: ' + c.business + '\n' +
+        'Locales: ' + c.branches + '\n' +
+        (c.plan ? 'Plan de interés: ' + c.plan + '\n' : '') +
+        'Teléfono / WhatsApp: ' + c.phone + '\n' +
+        'Correo: ' + c.email + '\n\n' +
+        (c.meet ? 'Google Meet: ' + c.meet + '\n' : '') +
+        'Ver en Google Calendar: ' + c.link + '\n\n' +
+        'Puedes responder este correo para escribirle directamente al cliente.'
+    });
+  } catch (err) {
+    console.error('No se pudo enviar el aviso: ' + err);
   }
 }
 
