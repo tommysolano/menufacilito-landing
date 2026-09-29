@@ -245,11 +245,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 els.slots.appendChild(p);
                 return;
             }
-            slots.forEach((t, i) => {
+            slots.forEach(t => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'slot' + (t === selectedMin ? ' selected' : '');
-                btn.style.animationDelay = (i * 25) + 'ms';
                 btn.textContent = fmtTime(t);
                 btn.setAttribute('aria-pressed', String(t === selectedMin));
                 btn.addEventListener('click', () => {

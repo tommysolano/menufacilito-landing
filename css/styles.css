@@ -1113,7 +1113,6 @@ body { padding-top: var(--header-h); }
     color: var(--primary);
     cursor: pointer;
     transition: background 0.15s, color 0.15s, border-color 0.15s;
-    animation: sch-in 0.25s ease-out both;
 }
 .slot:hover { border-color: var(--primary); background: var(--cream); }
 .slot.selected {
